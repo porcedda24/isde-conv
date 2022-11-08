@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-from conv_1d_kernels import CConvKernelMovingAverage
+from conv_1d_kernels import CConvKernelMovingAverage, CConvKernelTriangle, \
+    CConvKernelCombo
 
 data = pd.read_csv('../data/mnist_data.csv')
 data = np.array(data)
@@ -49,3 +50,17 @@ plt.imshow(x.reshape(28, 28))
 plt.subplot(1, 2, 2)
 plt.imshow(xp.reshape(28, 28))
 plt.show()
+
+# kernel triangle
+mask_size = 9
+k = (mask_size - 1) // 2
+mask = np.ones(shape=(mask_size, ))
+for i in range(k):
+    mask[i+1:-1-i] += 1
+    print(mask)
+
+filter = CConvKernelTriangle(kernel_size=11)
+xp = filter.kernel(x)
+plt.imshow(xp.reshape(28, 28))
+plt.show()
+
